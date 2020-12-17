@@ -1,7 +1,117 @@
+<!doctype html>
 <html>
-<header><title>This is title</title></header>
+<head>
+  <meta charset="utf-8">
+  <title>Hello World</title>
+</head>
+  <script src="pixi.min.js"></script>
+ 
 <body>
-Hello MARS!!!
-<script type="module" src="kyky.js"></script>
+  <script type="text/javascript">
+
+    //Aliases
+let Application = PIXI.Application,
+    Container = PIXI.Container,
+    loader = PIXI.loader,
+    resources = PIXI.loader.resources,
+    TextureCache = PIXI.utils.TextureCache,
+    Sprite = PIXI.Sprite;
+
+//Create a Pixi Application
+let app = new Application({ 
+    width: 400, 
+    height: 500,                       
+    antialiasing: true, 
+    transparent: false, 
+    resolution: 1
+  }
+);
+
+//Add the canvas that Pixi automatically created for you to the HTML document
+document.body.appendChild(app.view);
+
+loader
+  .add( ["eye.png", "glasses.jpg"] )
+  .load(setup);
+
+
+let leye, reye, glasses;
+
+let mouse = { "x": 0, "y": 0 };
+let center = { "x": 193, "y": 80 };
+let eyeradius = 5;
+
+function setup() {
+
+  //Create the `cat` sprite 
+  leye = new Sprite(resources["eye.png"].texture);
+  leye.cx = 130; // center // 193px - middle eyes
+  leye.cy = 80;  //            100-200-300 radiuses  
+  leye.x = 132;
+  leye.y = 95;
+
+  reye = new Sprite(resources["eye.png"].texture);
+  reye.cx = 255;// center
+  reye.cy = 80;
+  reye.x = 253;
+  reye.y = 95;
+
+  glasses = new Sprite(resources["glasses.jpg"].texture);
+  app.stage.addChild(glasses);
+
+  app.stage.addChild(leye);
+  app.stage.addChild(reye);
+  
+
+  app.renderer.view.addEventListener("mousemove", onMouseMove);
+ 
+ 
+  app.ticker.add(delta => gameLoop(delta));
+}
+
+function onMouseMove(event) {
+  var rect = app.renderer.view.getBoundingClientRect();
+  mouse.x = event.clientX - rect.left;
+  mouse.y = event.clientY - rect.top;
+  updatePositions();
+}
+
+function updatePositions() {
+  let dist = Math.sqrt( Math.pow( mouse.x - center.x ,2 ) + Math.pow( mouse.y - center.y ,2 ) );
+  
+
+  let alpha = ( dist ) / 300;
+  eyeradius = 20 - 20 * alpha;
+  if (dist > 300)
+    eyeradius = 0;
+ 
+
+
+  
+  let angle = Math.atan2( -mouse.y + center.y , mouse.x - center.x );
+  
+
+  leye.x = leye.cx + eyeradius * Math.cos(angle);
+  leye.y = leye.cy - eyeradius * Math.sin(angle);
+
+  reye.x = reye.cx + eyeradius * Math.cos(angle);
+  reye.y = reye.cy - eyeradius * Math.sin(angle);
+
+  
+
+}
+
+function getPolarAngle() {
+
+  
+}
+
+
+function gameLoop(delta){
+
+  
+}
+   
+  </script>
 </body>
 </html>
