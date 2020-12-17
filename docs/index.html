@@ -5,7 +5,13 @@
   <title>Hello World</title>
 </head>
   <script src="pixi.min.js"></script>
- 
+  <style>
+    canvas {
+      border-style: solid;
+      border-width: 1px;
+    }
+  </style>
+
 <body>
   <script type="text/javascript">
 
@@ -81,9 +87,9 @@ function updatePositions() {
   
 
   let alpha = ( dist ) / 300;
-  eyeradius = 20 - 20 * alpha;
+  eyeradius = 20 - 10 * alpha;
   if (dist > 300)
-    eyeradius = 0;
+    eyeradius = 10;
  
 
 
